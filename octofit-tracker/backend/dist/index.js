@@ -95,10 +95,5 @@ app.get('/api/workouts/', async (req, res) => {
     const workouts = (await Workout.find({}).exec());
     res.json({ count: workouts.length, results: workouts });
 });
-app.listen(PORT, '0.0.0.0', () => {
-    console.log(`🚀 OctoFit Tracker Backend running on ${apiBaseUrl}`);
-    console.log(`🧪 API endpoints available at ${apiBaseUrl}/api`);
-    console.log(`🗄️  MongoDB connection target: mongodb://localhost:27017/octofit_db`);
-    console.log(`⚛️  Frontend available on ${frontendLocalUrl}`);
-});
+export default app;
 //# sourceMappingURL=index.js.map
