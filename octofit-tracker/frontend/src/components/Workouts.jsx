@@ -1,13 +1,8 @@
 import { useState, useEffect } from 'react'
 
-const getApiUrl = (endpoint) => {
-  const codespaceName = import.meta.env.VITE_CODESPACE_NAME
-  if (codespaceName) {
-    return `https://${codespaceName}-8000.app.github.dev/api/${endpoint}/`
-  }
-  console.warn('VITE_CODESPACE_NAME is not defined. Please set it in .env.local. Falling back to localhost.')
-  return `http://localhost:8000/api/${endpoint}/`
-}
+const apiUrl = import.meta.env.VITE_CODESPACE_NAME
+  ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/workouts`
+  : 'http://localhost:8000/api/workouts'
 
 export default function Workouts() {
   const [workouts, setWorkouts] = useState([])
@@ -18,7 +13,7 @@ export default function Workouts() {
     const fetchWorkouts = async () => {
       try {
         setLoading(true)
-        const response = await fetch(getApiUrl('workouts'))
+        const response = await fetch(apiUrl)
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`)
         }
