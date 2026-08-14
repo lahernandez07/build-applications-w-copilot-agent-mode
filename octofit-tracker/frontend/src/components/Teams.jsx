@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react'
 
-const API_BASE_URL = (() => {
+const getApiUrl = (endpoint) => {
   const codespaceName = import.meta.env.VITE_CODESPACE_NAME
-  if (!codespaceName) {
-    console.warn('VITE_CODESPACE_NAME is not defined. Please set it in .env.local')
-    return 'http://localhost:8000'
+  if (codespaceName) {
+    return `https://${codespaceName}-8000.app.github.dev/api/${endpoint}/`
   }
-  return `https://${codespaceName}-8000.app.github.dev`
-})()
+  console.warn('VITE_CODESPACE_NAME is not defined. Please set it in .env.local. Falling back to localhost.')
+  return `http://localhost:8000/api/${endpoint}/`
+}
 
 export default function Teams() {
   const [teams, setTeams] = useState([])
@@ -18,7 +18,7 @@ export default function Teams() {
     const fetchTeams = async () => {
       try {
         setLoading(true)
-        const response = await fetch(`${API_BASE_URL}/api/teams/`)
+        const response = await fetch(getApiUrl('teams'))
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`)
         }
